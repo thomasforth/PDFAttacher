@@ -11,10 +11,10 @@ This project is in part inspired by Aiybe's [PDFData project](https://github.com
 This software is licensed under an MIT license. Use it for whatever you like. It relies on PDFBox which is available under the Apache License v2.0 -- so you should check that out too.
 
 ## Screenshots
-PDF with attachments in PDF Attacher
+PDF with attachments in PDF Attacher.
 
 ![PDFAttacher screenshot with a .json and a .docx file attached to a PDF](./Screenshot2.PNG?raw=true "PDFAttacher screenshot with a .json and a .docx file attached to a PDF")
 
-The same file opened in Adboe Acrobat Reader DC
+The same file opened in Adobe Acrobat Reader DC on Windows.
 
 ![](./ReaderScreenshot.PNG?raw=true)
