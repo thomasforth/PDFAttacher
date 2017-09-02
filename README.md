@@ -1,7 +1,7 @@
 # PDFAttacher
 A PDFBox front-end for Windows that adds/extracts/removes attachments from PDFs.
 
-![PDFAttacher screenshot with a .json and a .docx file attached to a PDF](/Screenshot2.png?raw=true "PDFAttacher screenshot with a .json and a .docx file attached to a PDF")
+![PDFAttacher screenshot with a .json and a .docx file attached to a PDF](./Screenshot2.PNG?raw=true "PDFAttacher screenshot with a .json and a .docx file attached to a PDF")
 
 ## Usage
 A Windows quickstart installer is availalbe on the [project release page](http://tomforth.co.uk/pdfattacher/). A binary is included in this repo. The solution should open and run from Visual Studio 2017 or later and relies on the [PDFBox NuGet package](https://www.nuget.org/packages/Pdfbox/1.1.1/) only.
