@@ -1,0 +1,41 @@
+﻿<Window x:Class="PDFAttacher.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PDFAttacher"
+        mc:Ignorable="d"
+        Icon="AppIcon.png"
+        Title="PDFAttacher" Height="500" Width="750">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>        
+        <TextBlock Grid.Row="0" Margin="5" VerticalAlignment="Bottom">Drop a PDF here:</TextBlock>
+        <Border x:Name="FileDropZoneBorder" Grid.Row="1" Margin="5" BorderBrush="Black" BorderThickness="1" AllowDrop="True">
+            <Grid VerticalAlignment="Stretch" x:Name="FileDropZone" Drop="FileDropZone_Drop" DragEnter="FileDropZone_DragEnter" Background="White" DragLeave="FileDropZone_DragLeave">
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Image x:Name="PDFIcon" Width="32" Height="32"></Image>
+                    <TextBlock Margin="5" x:Name="FileDropStatus"></TextBlock>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <TextBlock Grid.Row="2" Margin="5" VerticalAlignment="Bottom">Attachments:</TextBlock>
+        <TextBlock Grid.Row="2" Margin="5" VerticalAlignment="Bottom" HorizontalAlignment="Right" Foreground="Gray">(Drop files to add. Click files to save or delete them)</TextBlock>
+        <Border x:Name="AttachmentZoneBorder" Grid.Row="3" Margin="5" BorderBrush="Black" BorderThickness="1" AllowDrop="True">
+            <Grid VerticalAlignment="Stretch" x:Name="AttachmentZone" Drop="AttachmentZone_Drop" DragEnter="AttachmentZone_DragEnter" Background="White" DragLeave="AttachmentZone_DragLeave" MouseUp="AttachmentZone_MouseUp">
+                <StackPanel x:Name="AttachmentsPanel" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    
+                </StackPanel>
+            </Grid>
+        </Border>
+        <StackPanel Grid.Row="4" x:Name="ButtonsStackPanel" Visibility="Hidden" Orientation="Horizontal">
+            <Button x:Name="DownloadButton" Margin="5" MinWidth="100" Click="DownloadButton_Click">Save attachment.</Button>
+            <Button x:Name="DeleteFile" Margin="5" MinWidth="100" Click="DeleteFile_Click">Delete attachment.</Button>
+        </StackPanel>
+    </Grid>
+</Window>
