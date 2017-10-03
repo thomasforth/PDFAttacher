@@ -48,6 +48,7 @@ namespace PDFAttacher
             }
 
             FileDropStatus.Text = "";
+            AttachmentsPanel.Children.Clear();
 
             if (!String.Equals(System.IO.Path.GetExtension(PDFPath),".pdf",StringComparison.CurrentCultureIgnoreCase))
             {
@@ -210,8 +211,17 @@ namespace PDFAttacher
                 if (pd != null) {
                     foreach (string file in filesList)
                     {
-                        byte[] fileBytes = System.IO.File.ReadAllBytes(file);
-
+                        byte[] fileBytes;
+                        try
+                        {
+                            fileBytes = System.IO.File.ReadAllBytes(file);
+                        }
+                        catch 
+                        {
+                            // couldn't read file
+                            MessageBox.Show("Can't open " + file + " make sure it is not open in another application.", "Can't open file.");
+                            continue;
+                        }
                         FileStream _filestream = System.IO.File.Open(file, FileMode.Open);
                         string nameOfFileToAttach = _filestream.Name;
                         _filestream.Close();
@@ -228,18 +238,28 @@ namespace PDFAttacher
 
                         PDDocumentCatalog catalog = pd.getDocumentCatalog();
                         PDDocumentNameDictionary names = catalog.getNames();
-                        PDEmbeddedFilesNameTreeNode embeddedFiles = names.getEmbeddedFiles();
-                        Map embeddedFileNames = embeddedFiles.getNames();
-                        Dictionary<String, PDComplexFileSpecification> embeddedFileNamesNet = embeddedFileNames.ToDictionary<String, PDComplexFileSpecification>();
 
                         Map TomsNewMap = new HashMap();
-
-                        // Attach all the existing files         
-                        foreach (KeyValuePair<String, PDComplexFileSpecification> entry in embeddedFileNamesNet)
+                        if (names != null)
                         {
-                            TomsNewMap.put(entry.Key, entry.Value);
+                            // there are already some attached files
+                            PDEmbeddedFilesNameTreeNode embeddedFiles = names.getEmbeddedFiles();
+                            Map embeddedFileNames = embeddedFiles.getNames();
+                            Dictionary<String, PDComplexFileSpecification> embeddedFileNamesNet = embeddedFileNames.ToDictionary<String, PDComplexFileSpecification>();
+
+
+                            // Attach all the existing files         
+                            foreach (KeyValuePair<String, PDComplexFileSpecification> entry in embeddedFileNamesNet)
+                            {
+                                TomsNewMap.put(entry.Key, entry.Value);
+                            }
                         }
-                        
+                        else
+                        {
+                            // there are no files already attached -- so create a new name dictionary
+                            names = new PDDocumentNameDictionary(catalog);
+                        }
+
                         // Attach the new file
                         TomsNewMap.put(System.IO.Path.GetFileName(nameOfFileToAttach), fs);
                         PDEmbeddedFilesNameTreeNode TomsEmbeddedFiles = new PDEmbeddedFilesNameTreeNode();
