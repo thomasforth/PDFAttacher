@@ -5,7 +5,7 @@ A PDFBox front-end for Windows that adds/extracts/removes attachments from PDFs.
 A Windows quickstart installer is available on the [project release page](http://tomforth.co.uk/pdfattacher/). A binary is included in this repo. The solution should open and run from Visual Studio 2017 or later and relies on the [PDFBox NuGet package](https://www.nuget.org/packages/Pdfbox/1.1.1/) only.
 
 ## Related projects
-This project is in part inspired by Aiybe's [PDFData project](https://github.com/Aiybe/PDFData) which implements more attachment methods. PDFAttacher is focused on simplicity and reliability on Windows, to allow testing with users.
+This project is in part inspired by Abe Jellinek's [PDFData project](https://github.com/Aiybe/PDFData) which implements more attachment methods. PDFAttacher is focused on simplicity and reliability on Windows, to allow testing with users.
 
 ## License
 This software is licensed under an MIT license. Use it for whatever you like. It relies on PDFBox which is available under the Apache License v2.0 -- so you should check that out too.
