@@ -64,50 +64,59 @@ namespace PDFAttacher
                 PDDocumentNameDictionary names = catalog.getNames();
                 PDEmbeddedFilesNameTreeNode embeddedFiles = names.getEmbeddedFiles();
 
-                Map embeddedFileNames = embeddedFiles.getNames();
-                embeddedFileNamesNet = embeddedFileNames.ToDictionary<String, PDComplexFileSpecification>();
-
                 AttachmentsPanel.Children.Clear();
-                //For-Each Loop is used to list all embedded files (if there is more than one)          
-                foreach (KeyValuePair<String, PDComplexFileSpecification> entry in embeddedFileNamesNet)
+
+                if (embeddedFiles == null)
                 {
-                    StackPanel attachmentPanel = new StackPanel();
-                    attachmentPanel.Orientation = Orientation.Vertical;
-                    attachmentPanel.Margin = new Thickness(5);
-                    attachmentPanel.MinWidth = 90;
-                    System.Windows.Controls.Image attachmentImage = new System.Windows.Controls.Image();
-                    attachmentImage.Height = 32;
-                    attachmentImage.Width = 32;
+                    // there are no embedded files don't try and read them
+                }
+                else
+                {
+                    Map embeddedFileNames = embeddedFiles.getNames();
+                    embeddedFileNamesNet = embeddedFileNames.ToDictionary<String, PDComplexFileSpecification>();
 
-                    attachmentPanel.Tag = entry.Key;
 
-                    attachmentPanel.MouseEnter += AttachmentPanel_MouseEnter;
-                    attachmentPanel.MouseLeave += AttachmentPanel_MouseLeave;
-                    attachmentPanel.MouseUp += AttachmentPanel_MouseUp;
+                    //For-Each Loop is used to list all embedded files (if there is more than one)          
+                    foreach (KeyValuePair<String, PDComplexFileSpecification> entry in embeddedFileNamesNet)
+                    {
+                        StackPanel attachmentPanel = new StackPanel();
+                        attachmentPanel.Orientation = Orientation.Vertical;
+                        attachmentPanel.Margin = new Thickness(5);
+                        attachmentPanel.MinWidth = 90;
+                        System.Windows.Controls.Image attachmentImage = new System.Windows.Controls.Image();
+                        attachmentImage.Height = 32;
+                        attachmentImage.Width = 32;
 
-                    Icon attachmentIcon = ShellIcon.GetLargeIconFromExtension(System.IO.Path.GetExtension(entry.Key));
-                    BitmapSource attachmentBitmapSource = Imaging.CreateBitmapSourceFromHIcon(attachmentIcon.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                    attachmentImage.Source = attachmentBitmapSource;
-                    attachmentImage.Margin = new Thickness(5, 5, 5, 0);
-                    attachmentIcon.Dispose();
+                        attachmentPanel.Tag = entry.Key;
 
-                    TextBlock attachmentTextBlock = new TextBlock();
-                    attachmentTextBlock.Margin = new Thickness(5);
-                    attachmentTextBlock.Text = System.IO.Path.GetFileName(entry.Key);
+                        attachmentPanel.MouseEnter += AttachmentPanel_MouseEnter;
+                        attachmentPanel.MouseLeave += AttachmentPanel_MouseLeave;
+                        attachmentPanel.MouseUp += AttachmentPanel_MouseUp;
 
-                    System.Windows.Controls.Image deleteImage = new System.Windows.Controls.Image();
-                    deleteImage.Height = 20;
-                    deleteImage.Width = 20;
-                    deleteImage.Margin = new Thickness(0, 6, -50, -6);
+                        Icon attachmentIcon = ShellIcon.GetLargeIconFromExtension(System.IO.Path.GetExtension(entry.Key));
+                        BitmapSource attachmentBitmapSource = Imaging.CreateBitmapSourceFromHIcon(attachmentIcon.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                        attachmentImage.Source = attachmentBitmapSource;
+                        attachmentImage.Margin = new Thickness(5, 5, 5, 0);
+                        attachmentIcon.Dispose();
 
-                    // var uriSource = new Uri(@"/PDFBox_sharp;component/DeleteIcon.png", UriKind.Relative);
-                    // deleteImage.Source = new BitmapImage(uriSource);
+                        TextBlock attachmentTextBlock = new TextBlock();
+                        attachmentTextBlock.Margin = new Thickness(5);
+                        attachmentTextBlock.Text = System.IO.Path.GetFileName(entry.Key);
 
-                    // attachmentPanel.Children.Add(deleteImage);
-                    attachmentPanel.Children.Add(attachmentImage);
-                    attachmentPanel.Children.Add(attachmentTextBlock);
+                        System.Windows.Controls.Image deleteImage = new System.Windows.Controls.Image();
+                        deleteImage.Height = 20;
+                        deleteImage.Width = 20;
+                        deleteImage.Margin = new Thickness(0, 6, -50, -6);
 
-                    AttachmentsPanel.Children.Add(attachmentPanel);
+                        // var uriSource = new Uri(@"/PDFBox_sharp;component/DeleteIcon.png", UriKind.Relative);
+                        // deleteImage.Source = new BitmapImage(uriSource);
+
+                        // attachmentPanel.Children.Add(deleteImage);
+                        attachmentPanel.Children.Add(attachmentImage);
+                        attachmentPanel.Children.Add(attachmentTextBlock);
+
+                        AttachmentsPanel.Children.Add(attachmentPanel);
+                    }
                 }
 
                 Icon sysicon = System.Drawing.Icon.ExtractAssociatedIcon(PDFPath);
@@ -244,14 +253,21 @@ namespace PDFAttacher
                         {
                             // there are already some attached files
                             PDEmbeddedFilesNameTreeNode embeddedFiles = names.getEmbeddedFiles();
-                            Map embeddedFileNames = embeddedFiles.getNames();
-                            Dictionary<String, PDComplexFileSpecification> embeddedFileNamesNet = embeddedFileNames.ToDictionary<String, PDComplexFileSpecification>();
-
-
-                            // Attach all the existing files         
-                            foreach (KeyValuePair<String, PDComplexFileSpecification> entry in embeddedFileNamesNet)
+                            if (embeddedFiles == null)
                             {
-                                TomsNewMap.put(entry.Key, entry.Value);
+                                // worrying -- I wouldn't expect this to ever happen.
+                            }
+                            else
+                            {
+                                Map embeddedFileNames = embeddedFiles.getNames();
+                                Dictionary<String, PDComplexFileSpecification> embeddedFileNamesNet = embeddedFileNames.ToDictionary<String, PDComplexFileSpecification>();
+
+
+                                // Attach all the existing files         
+                                foreach (KeyValuePair<String, PDComplexFileSpecification> entry in embeddedFileNamesNet)
+                                {
+                                    TomsNewMap.put(entry.Key, entry.Value);
+                                }
                             }
                         }
                         else
